@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mina's Luxury Transportation | Orlando Private Car Service</title>
+  <meta name="description" content="Premium private transportation in Orlando for airport transfers, hotels, cruise transfers, corporate travel, weddings, and hourly chauffeur service." />
+  <meta name="keywords" content="Orlando luxury transportation, airport transfer Orlando, private car service Orlando, chauffeur Orlando, MCO airport transportation, wedding transportation Orlando" />
+  <meta name="author" content="Mina's Luxury Transportation" />
+
+  <meta property="og:title" content="Mina's Luxury Transportation" />
+  <meta property="og:description" content="Luxury private transportation in Orlando with professional service, premium vehicles, and reliable airport transfers." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="logo.png" />
+  <meta property="og:url" content="https://yourdomain.com" />
+
+  <meta name="theme-color" content="#0f2342" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Mina's Luxury Transportation",
+    "image": "logo.png",
+    "url": "https://yourdomain.com",
+    "telephone": "+1-000-000-0000",
+    "email": "info@yourdomain.com",
+    "priceRange": "$$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Orlando",
+      "addressRegion": "FL",
+      "addressCountry": "US"
+    },
+    "areaServed": "Orlando, Florida",
+    "description": "Luxury private transportation for airport transfers, hotels, weddings, cruise transfers, and executive travel in Orlando."
+  }
+  </script>
+
+  <style>
+    :root {
+      --navy: #0f2342;
+      --navy-2: #162f57;
+      --gold: #c7a45a;
+      --gold-soft: #e5cc8f;
+      --dark: #0b1320;
+      --text: #263447;
+      --muted: #64748b;
+      --bg: #f8f8f6;
+      --white: #ffffff;
+      --line: rgba(15, 35, 66, 0.12);
+      --shadow: 0 18px 50px rgba(15, 35, 66, 0.12);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1240px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(199,164,90,0.10), transparent 24%),
+        linear-gradient(180deg, #fcfcfb 0%, #f4f5f7 100%);
+      line-height: 1.6;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 0.95;
+      color: var(--navy);
+      margin: 0 0 16px;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      color: var(--navy);
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    .section-text,
+    .lead,
+    .muted {
+      color: var(--muted);
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      max-width: 720px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 700;
+      transition: 0.25s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+      color: #141414;
+      box-shadow: 0 10px 24px rgba(199,164,90,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(199,164,90,0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.75);
+      color: var(--navy);
+      border-color: rgba(15,35,66,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .topbar {
+      background: var(--navy);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.92rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .topbar-items,
+    .topbar-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .topbar a:hover { color: var(--gold-soft); }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248,248,246,0.8);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(15,35,66,0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #fff;
+      padding: 4px;
+      box-shadow: 0 8px 24px rgba(15,35,66,0.08);
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .nav-links a {
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-btn {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,35,66,0.12);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .hero {
+      padding: 56px 0 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow: var(--shadow);
+      border-radius: 30px;
+      padding: 34px;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-badges li {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(15,35,66,0.06);
+      color: var(--navy);
+      border: 1px solid rgba(15,35,66,0.08);
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .hero-panel {
+      position: relative;
+      padding: 26px;
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(15,35,66,0.98), rgba(15,35,66,0.92)),
+        url('logo.png') center/contain no-repeat;
+      color: #fff;
+      box-shadow: 0 30px 60px rgba(15,35,66,0.28);
+      overflow: hidden;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(199,164,90,0.26), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,0.12), transparent 24%);
+      pointer-events: none;
+    }
+
+    .hero-panel-top,
+    .hero-panel-bottom {
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .glass-item {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .glass-item strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .quick-book {
+      background: var(--white);
+      border-radius: 26px;
+      padding: 24px;
+      color: var(--text);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.14);
+    }
+
+    .quick-book h3 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 1.25rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-wrap.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid rgba(15,35,66,0.12);
+      background: #fbfbfb;
+      border-radius: 14px;
+      padding: 14px 14px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(199,164,90,0.14);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .mini-note {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.74);
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(15,35,66,0.08);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      color: var(--navy);
+      margin-bottom: 6px;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 32px rgba(15,35,66,0.08);
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 42px rgba(15,35,66,0.12);
+    }
+
+    .icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(199,164,90,0.18), rgba(15,35,66,0.06));
+      color: var(--navy);
+      margin-bottom: 18px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .card h3,
+    .fleet-card h3,
+    .testimonial h3,
+    .faq-item h3 {
+      margin: 0 0 10px;
+      color: var(--navy);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .image-panel,
+    .content-panel {
+      border-radius: 30px;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .image-panel {
+      background:
+        linear-gradient(180deg, rgba(15,35,66,0.92), rgba(15,35,66,0.78)),
+        url('logo.png') center/54% no-repeat;
+      position: relative;
+      min-height: 520px;
+      box-shadow: var(--shadow);
+    }
+
+    .image-panel::after {
+      content: "Serving Orlando • Airports • Hotels • Cruise Ports • Events";
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 16px 18px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .content-panel {
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(15,35,66,0.08);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    .check-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      padding: 0;
+      margin: 24px 0 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      background: rgba(15,35,66,0.05);
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .fleet-card {
+      position: relative;
+      background: linear-gradient(180deg, #ffffff, #f8f9fb);
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(15,35,66,0.08);
+      overflow: hidden;
+    }
+
+    .fleet-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(199,164,90,0.18), transparent 65%);
+    }
+
+    .fleet-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .fleet-specs span {
+      font-size: 0.88rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(15,35,66,0.05);
+      color: var(--navy);
+      font-weight: 600;
+      border: 1px solid rgba(15,35,66,0.08);
+    }
+
+    .service-areas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .area-pill {
+      background: #fff;
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--navy);
+      box-shadow: 0 10px 28px rgba(15,35,66,0.06);
+    }
+
+    .testimonial-grid,
+    .faq-grid,
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .testimonial,
+    .faq-item {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid rgba(15,35,66,0.08);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(15,35,66,0.08);
+    }
+
+    .stars {
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .cta-band {
+      background:
+        linear-gradient(135deg, rgba(15,35,66,0.98), rgba(22,47,87,0.95));
+      color: white;
+      border-radius: 34px;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 20px;
+      align-items: center;
+      box-shadow: 0 26px 55px rgba(15,35,66,0.25);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cta-band::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(199,164,90,0.32), transparent 26%);
+    }
+
+    .cta-band > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-band .section-title,
+    .cta-band .lead {
+      color: white;
+    }
+
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.86);
+      padding: 70px 0 28px;
+      margin-top: 88px;
+    }
+
+    .footer h3,
+    .footer h4 {
+      color: white;
+      margin-top: 0;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .footer-brand img {
+      width: 66px;
+      height: 66px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #fff;
+      padding: 4px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer a:hover {
+      color: var(--gold-soft);
+    }
+
+    .copyright {
+      margin-top: 34px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.92rem;
+    }
+
+    .float-actions {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 60;
+    }
+
+    .float-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 18px 28px rgba(15,35,66,0.18);
+      font-size: 1.2rem;
+      font-weight: 700;
+      border: 1px solid rgba(15,35,66,0.1);
+      background: white;
+      color: var(--navy);
+    }
+
+    .float-btn.call {
+      background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+      color: #151515;
+    }
+
+    .hidden-mobile {
+      display: block;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .split,
+      .cta-band {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid,
+      .fleet-grid,
+      .testimonial-grid,
+      .faq-grid,
+      .footer-grid,
+      .service-areas {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .nav-links,
+      .nav-cta .btn-secondary {
+        display: none;
+      }
+
+      .menu-btn {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav.open .nav-links {
+        display: flex;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 16px;
+        right: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        background: rgba(255,255,255,0.98);
+        border: 1px solid rgba(15,35,66,0.08);
+        border-radius: 22px;
+        box-shadow: 0 24px 50px rgba(15,35,66,0.12);
+        padding: 18px;
+      }
+
+      .topbar-inner {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .section {
+        padding: 72px 0;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      .hero-card,
+      .content-panel,
+      .quick-book,
+      .card,
+      .fleet-card,
+      .testimonial,
+      .faq-item,
+      .cta-band {
+        padding: 22px;
+      }
+
+      .form-grid,
+      .check-list,
+      .card-grid,
+      .fleet-grid,
+      .testimonial-grid,
+      .faq-grid,
+      .footer-grid,
+      .service-areas,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-name {
+        font-size: 1.45rem;
+      }
+
+      .brand-sub {
+        letter-spacing: 0.15em;
+      }
+
+      .topbar {
+        display: none;
+      }
+
+      .hidden-mobile {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-items">
+        <span>Luxury private transportation in Orlando</span>
+        <a href="tel:+10000000000">Call: (000) 000-0000</a>
+        <a href="mailto:info@yourdomain.com">info@yourdomain.com</a>
+      </div>
+      <div class="topbar-actions">
+        <span>Available for airport, hotel, cruise, and event transfers</span>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="container">
+      <nav class="nav" id="siteNav">
+        <a href="#home" class="brand" aria-label="Mina's Luxury Transportation home">
+          <img src="logo.png" alt="Mina's Luxury Transportation logo" />
+          <div class="brand-text">
+            <div class="brand-name">Mina's</div>
+            <div class="brand-sub">Luxury Transportation</div>
+          </div>
+        </a>
+
+        <div class="nav-links" id="navLinks">
+          <a href="#home" class="active">Home</a>
+          <a href="#services">Services</a>
+          <a href="#fleet">Fleet</a>
+          <a href="#about">About</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <div class="nav-cta">
+          <a class="btn btn-secondary hidden-mobile" href="#contact">Request Quote</a>
+          <a class="btn btn-primary" href="tel:+10000000000">Book Now</a>
+          <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <div class="eyebrow">Premium Chauffeur Experience</div>
+          <h1 class="title">Luxury transportation that makes every arrival feel first class.</h1>
+          <p class="lead">
+            From airport pickups and hotel transfers to weddings, executive travel, and special events,
+            Mina's Luxury Transportation delivers dependable private service with comfort, professionalism,
+            and attention to detail.
+          </p>
+
+          <div class="btn-group">
+            <a class="btn btn-primary" href="#contact">Get a Quote</a>
+            <a class="btn btn-secondary" href="#fleet">View Fleet</a>
+          </div>
+
+          <ul class="hero-badges">
+            <li>Airport Transfers</li>
+            <li>Hotel & Resort Pickups</li>
+            <li>Wedding Transportation</li>
+            <li>Corporate Travel</li>
+            <li>Hourly Service</li>
+          </ul>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>24/7</strong>
+              <span>Advanced booking support</span>
+            </div>
+            <div class="stat">
+              <strong>Private</strong>
+              <span>No ride sharing, ever</span>
+            </div>
+            <div class="stat">
+              <strong>Luxury</strong>
+              <span>Clean, premium vehicles</span>
+            </div>
+            <div class="stat">
+              <strong>On-Time</strong>
+              <span>Reliable chauffeur service</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="hero-panel-top">
+            <div class="eyebrow" style="color:#f1d79a;">Why Clients Choose Us</div>
+            <div class="glass-list">
+              <div class="glass-item">
+                <strong>Professional Service</strong>
+                Polished communication, punctual arrivals, and a luxury-first experience.
+              </div>
+              <div class="glass-item">
+                <strong>Comfort & Cleanliness</strong>
+                Premium presentation inside and out for every reservation.
+              </div>
+              <div class="glass-item">
+                <strong>Flexible Scheduling</strong>
+                Airport, cruise, hotel, event, and custom itinerary transportation.
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-panel-bottom">
+            <div class="quick-book">
+              <h3>Quick Quote Request</h3>
+              <form class="form-grid" onsubmit="handleQuote(event)">
+                <div class="input-wrap">
+                  <label for="pickup">Pickup</label>
+                  <input id="pickup" type="text" placeholder="Airport, hotel, address" required>
+                </div>
+                <div class="input-wrap">
+                  <label for="dropoff">Drop-off</label>
+                  <input id="dropoff" type="text" placeholder="Destination" required>
+                </div>
+                <div class="input-wrap">
+                  <label for="date">Date</label>
+                  <input id="date" type="date" required>
+                </div>
+                <div class="input-wrap">
+                  <label for="time">Time</label>
+                  <input id="time" type="time" required>
+                </div>
+                <div class="input-wrap">
+                  <label for="passengers">Passengers</label>
+                  <select id="passengers" required>
+                    <option value="">Select</option>
+                    <option>1-3 passengers</option>
+                    <option>4-6 passengers</option>
+                    <option>7-10 passengers</option>
+                    <option>11+ passengers</option>
+                  </select>
+                </div>
+                <div class="input-wrap">
+                  <label for="service">Service Type</label>
+                  <select id="service" required>
+                    <option value="">Select</option>
+                    <option>Airport Transfer</option>
+                    <option>Round Trip</option>
+                    <option>Hourly Chauffeur</option>
+                    <option>Wedding / Event</option>
+                    <option>Cruise Transfer</option>
+                  </select>
+                </div>
+                <div class="input-wrap full">
+                  <button class="btn btn-primary" type="submit">Request Pricing</button>
+                </div>
+              </form>
+              <div class="mini-note">Connect this form later to Formspree, EmailJS, Netlify Forms, or your booking system.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="eyebrow">Our Services</div>
+        <h2 class="section-title">Professional transportation for every type of trip</h2>
+        <p class="section-text lead">
+          Your homepage should make it clear what you offer, who you serve, and why your service is different.
+          These are the main service categories most clients expect to see on a professional transportation website.
+        </p>
+
+        <div class="card-grid">
+          <article class="card">
+            <div class="icon">✈</div>
+            <h3>Airport Transfers</h3>
+            <p>Reliable pickup and drop-off service for MCO and surrounding airports with flight-aware scheduling and smooth curbside coordination.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">🏨</div>
+            <h3>Hotel & Resort Transportation</h3>
+            <p>Luxury transfers for visitors, families, and business travelers going to hotels, resorts, conference centers, and vacation properties.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">💼</div>
+            <h3>Executive & Corporate Travel</h3>
+            <p>Private chauffeur service designed for meetings, conferences, client entertainment, and premium business transportation.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">💍</div>
+            <h3>Wedding Transportation</h3>
+            <p>Elegant guest transportation, bridal party transfers, rehearsal dinner service, and special event travel with a luxury touch.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">🚢</div>
+            <h3>Cruise Port Transfers</h3>
+            <p>Comfortable transportation between Orlando, hotels, airports, and cruise terminals for a seamless start or finish to your trip.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">🕒</div>
+            <h3>Hourly Chauffeur Service</h3>
+            <p>Flexible transportation for custom itineraries, shopping trips, theme parks, dinner reservations, and private city travel.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container split">
+        <div class="image-panel" aria-hidden="true"></div>
+        <div class="content-panel">
+          <div class="eyebrow">About The Brand</div>
+          <h2 class="section-title">Built for clients who value comfort, reliability, and polished service</h2>
+          <p class="section-text">
+            A strong luxury transportation homepage should immediately build trust. That means clear branding,
+            premium visuals, simple booking options, and service details that reassure the client they are choosing
+            a professional company.
+          </p>
+          <p class="section-text">
+            Mina's Luxury Transportation is positioned as a premium private transportation service in Orlando,
+            focused on smooth communication, dependable scheduling, and high-end presentation from reservation to arrival.
+          </p>
+
+          <ul class="check-list">
+            <li>Private, premium transportation</li>
+            <li>Professional communication</li>
+            <li>Ideal for individuals, families, and groups</li>
+            <li>Perfect for airport and event travel</li>
+            <li>Luxury-focused brand presentation</li>
+            <li>Simple quote request experience</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fleet">
+      <div class="container">
+        <div class="eyebrow">Fleet Options</div>
+        <h2 class="section-title">Show your vehicle categories clearly</h2>
+        <p class="section-text lead">
+          Even if you update the exact vehicles later, your site should show visitors what type of ride they can expect.
+          Replace the sample descriptions below with your real fleet information.
+        </p>
+
+        <div class="fleet-grid">
+          <article class="fleet-card">
+            <h3>Luxury Sedan</h3>
+            <p>Ideal for executives, airport transfers, and couples looking for a smooth and stylish private ride.</p>
+            <div class="fleet-specs">
+              <span>1-3 passengers</span>
+              <span>2-3 bags</span>
+              <span>Quiet, premium ride</span>
+            </div>
+          </article>
+
+          <article class="fleet-card">
+            <h3>Luxury SUV</h3>
+            <p>Perfect for families, airport pickups, business travel, and VIP transportation with added space and comfort.</p>
+            <div class="fleet-specs">
+              <span>4-6 passengers</span>
+              <span>Extra luggage space</span>
+              <span>Most popular option</span>
+            </div>
+          </article>
+
+          <article class="fleet-card">
+            <h3>Executive Van / Sprinter</h3>
+            <p>Great for groups, events, weddings, cruise transfers, and premium transportation for larger parties.</p>
+            <div class="fleet-specs">
+              <span>7-14 passengers</span>
+              <span>Group transportation</span>
+              <span>Event-ready</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Popular Destinations</div>
+        <h2 class="section-title">Highlight the places clients often search for</h2>
+        <p class="section-text lead">
+          This section helps with trust and local SEO. Replace or expand the locations below based on the areas you serve.
+        </p>
+
+        <div class="service-areas">
+          <div class="area-pill">MCO Airport</div>
+          <div class="area-pill">Disney Resorts</div>
+          <div class="area-pill">Universal Orlando</div>
+          <div class="area-pill">International Drive</div>
+          <div class="area-pill">Convention Center</div>
+          <div class="area-pill">Port Canaveral</div>
+          <div class="area-pill">Downtown Orlando</div>
+          <div class="area-pill">Wedding Venues</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band">
+          <div>
+            <div class="eyebrow" style="color:#f1d79a;">Premium Booking Experience</div>
+            <h2 class="section-title">Ready to reserve your ride?</h2>
+            <p class="lead">
+              Make it easy for your visitors to take the next step. Your homepage should always include a strong,
+              visible booking call to action.
+            </p>
+          </div>
+          <div class="btn-group" style="justify-content:flex-start; margin-top:0;">
+            <a class="btn btn-primary" href="#contact">Request a Quote</a>
+            <a class="btn btn-secondary" href="tel:+10000000000">Call Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="eyebrow">Client Experience</div>
+        <h2 class="section-title">Testimonials build trust fast</h2>
+        <p class="section-text lead">
+          Add your real reviews here later from text messages, Google, or direct customer feedback.
+        </p>
+
+        <div class="testimonial-grid">
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <h3>Professional and on time</h3>
+            <p>Our airport pickup was smooth, the vehicle was spotless, and the communication was excellent from start to finish.</p>
+            <strong>- Client Review</strong>
+          </article>
+
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <h3>Luxury feel the entire ride</h3>
+            <p>We used the service for our hotel transfer and it felt polished, comfortable, and far better than a standard ride service.</p>
+            <strong>- Client Review</strong>
+          </article>
+
+          <article class="testimonial">
+            <div class="stars">★★★★★</div>
+            <h3>Perfect for our event</h3>
+            <p>The scheduling was easy, the service was dependable, and everything felt organized and first class for our group.</p>
+            <strong>- Client Review</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="eyebrow">Frequently Asked Questions</div>
+        <h2 class="section-title">Answer the questions clients usually ask before booking</h2>
+
+        <div class="faq-grid">
+          <article class="faq-item">
+            <h3>How do I request a quote?</h3>
+            <p>Clients can submit the quote form, call directly, or message through your preferred booking channel.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Do you offer airport pickup and return trips?</h3>
+            <p>Yes. You can offer one-way or round-trip reservations for airport transportation and custom itineraries.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Can I schedule transportation for a group?</h3>
+            <p>Yes. Group transportation can be arranged based on the number of passengers and luggage requirements.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Do you provide child seats?</h3>
+            <p>Add your actual policy here. Many transportation companies list available car seat options on the site.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Which areas do you serve?</h3>
+            <p>List your service area clearly, such as Orlando, surrounding cities, airports, cruise ports, and event venues.</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>How early should I book?</h3>
+            <p>For best availability, encourage clients to reserve as early as possible, especially during peak travel dates and events.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container split">
+        <div class="content-panel">
+          <div class="eyebrow">Contact & Booking</div>
+          <h2 class="section-title">Make it easy for visitors to reach you</h2>
+          <p class="section-text">
+            A professional transportation website should always have a strong contact section with phone, email,
+            service area, and a simple form for quotes or reservations.
+          </p>
+
+          <div class="card-grid" style="grid-template-columns: 1fr; margin-top: 20px;">
+            <div class="card">
+              <h3>Contact Information</h3>
+              <p><strong>Phone:</strong> <a href="tel:+10000000000">(000) 000-0000</a></p>
+              <p><strong>Email:</strong> <a href="mailto:info@yourdomain.com">info@yourdomain.com</a></p>
+              <p><strong>Service Area:</strong> Orlando, Florida and surrounding destinations</p>
+              <p><strong>Hours:</strong> By reservation / 24-7 booking inquiry support</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-panel">
+          <h2 class="section-title" style="font-size:2.2rem;">Request a Reservation</h2>
+          <form class="form-grid" onsubmit="handleContact(event)">
+            <div class="input-wrap">
+              <label for="name">Full Name</label>
+              <input id="name" type="text" placeholder="Your name" required>
+            </div>
+            <div class="input-wrap">
+              <label for="phone">Phone Number</label>
+              <input id="phone" type="tel" placeholder="Your phone" required>
+            </div>
+            <div class="input-wrap">
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="Your email" required>
+            </div>
+            <div class="input-wrap">
+              <label for="travelDate">Travel Date</label>
+              <input id="travelDate" type="date" required>
+            </div>
+            <div class="input-wrap full">
+              <label for="details">Trip Details</label>
+              <textarea id="details" placeholder="Pickup, drop-off, number of passengers, luggage, flight details, child seat needs, or any other request"></textarea>
+            </div>
+            <div class="input-wrap full">
+              <button class="btn btn-primary" type="submit">Send Request</button>
+            </div>
+          </form>
+          <div class="mini-note">This demo form shows the layout. Connect it to your email or booking platform before going live.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="logo.png" alt="Mina's Luxury Transportation logo" />
+            <div>
+              <h3 style="margin-bottom:4px;">Mina's Luxury Transportation</h3>
+              <div style="color: var(--gold-soft); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; font-size: 0.8rem;">Luxury Private Car Service</div>
+            </div>
+          </div>
+          <p>Premium transportation for airport transfers, events, business travel, and custom private rides in Orlando.</p>
+        </div>
+
+        <div>
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#fleet">Fleet</a>
+            <a href="#about">About</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
+          <div class="footer-links">
+            <a href="tel:+10000000000">(000) 000-0000</a>
+            <a href="mailto:info@yourdomain.com">info@yourdomain.com</a>
+            <span>Orlando, Florida</span>
+            <span>Available by reservation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright">
+        <span>© <span id="year"></span> Mina's Luxury Transportation. All rights reserved.</span>
+        <span>Designed for GitHub Pages deployment.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="float-actions" aria-label="Quick actions">
+    <a class="float-btn call" href="tel:+10000000000" aria-label="Call now">✆</a>
+    <a class="float-btn" href="#contact" aria-label="Open contact form">✉</a>
+  </div>
+
+  <script>
+    const nav = document.getElementById('siteNav');
+    const menuBtn = document.getElementById('menuBtn');
+    const year = document.getElementById('year');
+    year.textContent = new Date().getFullYear();
+
+    menuBtn.addEventListener('click', () => {
+      nav.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => nav.classList.remove('open'));
+    });
+
+    function handleQuote(event) {
+      event.preventDefault();
+      alert('Quote request form submitted. Connect this form to your email or booking platform to make it live.');
+    }
+
+    function handleContact(event) {
+      event.preventDefault();
+      alert('Reservation request submitted. Connect this form to Formspree, EmailJS, Netlify Forms, or your backend to receive messages.');
+    }
+  </script>
+</body>
+</html>
