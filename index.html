@@ -151,6 +151,11 @@
       border: 1px solid transparent;
     }
 
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--gold), var(--gold-soft));
       color: #141414;
@@ -215,6 +220,7 @@
       justify-content: space-between;
       gap: 20px;
       padding: 16px 0;
+      position: relative;
     }
 
     .brand {
@@ -351,7 +357,7 @@
       color: #fff;
       box-shadow: 0 30px 60px rgba(15,35,66,0.28);
       overflow: hidden;
-      min-height: 560px;
+      min-height: 700px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -458,6 +464,57 @@
       font-size: 0.9rem;
       color: var(--muted);
       margin-top: 10px;
+    }
+
+    .form-status,
+    .quote-result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(15,35,66,0.08);
+      font-size: 0.95rem;
+    }
+
+    .form-status.success,
+    .quote-result.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.10);
+      border-color: rgba(34, 197, 94, 0.25);
+      color: #166534;
+    }
+
+    .form-status.error,
+    .quote-result.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.10);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #991b1b;
+    }
+
+    .form-status.info,
+    .quote-result.info {
+      display: block;
+      background: rgba(15,35,66,0.05);
+      border-color: rgba(15,35,66,0.10);
+      color: var(--navy);
+    }
+
+    .quote-result strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--navy);
+    }
+
+    #routeMap {
+      width: 100%;
+      height: 320px;
+      margin-top: 14px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(15,35,66,0.10);
+      box-shadow: 0 12px 28px rgba(15,35,66,0.08);
+      background: #eef2f7;
     }
 
     .stats {
@@ -812,7 +869,7 @@
 
     @media (max-width: 920px) {
       .nav-links,
-      .nav-cta .btn-secondary {
+      .nav-cta .btn-secondary.hidden-mobile {
         display: none;
       }
 
@@ -888,6 +945,10 @@
       .hidden-mobile {
         display: none;
       }
+
+      #routeMap {
+        height: 260px;
+      }
     }
   </style>
 </head>
@@ -926,7 +987,7 @@
         </div>
 
         <div class="nav-cta">
-          <a class="btn btn-secondary hidden-mobile" href="#contact">Request Quote</a>
+          <a class="btn btn-secondary hidden-mobile" href="https://square.link/u/YOUR_SQUARE_PAYMENT_LINK" target="_blank" rel="noopener">Pay Online</a>
           <a class="btn btn-primary" href="tel:+10000000000">Book Now</a>
           <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
         </div>
@@ -1001,26 +1062,26 @@
           <div class="hero-panel-bottom">
             <div class="quick-book">
               <h3>Quick Quote Request</h3>
-              <form class="form-grid" onsubmit="handleQuote(event)">
+              <form class="form-grid" id="quoteForm" onsubmit="handleQuote(event)">
                 <div class="input-wrap">
                   <label for="pickup">Pickup</label>
-                  <input id="pickup" type="text" placeholder="Airport, hotel, address" required>
+                  <input id="pickup" name="pickup" type="text" placeholder="Airport, hotel, address" required>
                 </div>
                 <div class="input-wrap">
                   <label for="dropoff">Drop-off</label>
-                  <input id="dropoff" type="text" placeholder="Destination" required>
+                  <input id="dropoff" name="dropoff" type="text" placeholder="Destination" required>
                 </div>
                 <div class="input-wrap">
                   <label for="date">Date</label>
-                  <input id="date" type="date" required>
+                  <input id="date" name="date" type="date" required>
                 </div>
                 <div class="input-wrap">
                   <label for="time">Time</label>
-                  <input id="time" type="time" required>
+                  <input id="time" name="time" type="time" required>
                 </div>
                 <div class="input-wrap">
                   <label for="passengers">Passengers</label>
-                  <select id="passengers" required>
+                  <select id="passengers" name="passengers" required>
                     <option value="">Select</option>
                     <option>1-3 passengers</option>
                     <option>4-6 passengers</option>
@@ -1030,7 +1091,7 @@
                 </div>
                 <div class="input-wrap">
                   <label for="service">Service Type</label>
-                  <select id="service" required>
+                  <select id="service" name="service" required>
                     <option value="">Select</option>
                     <option>Airport Transfer</option>
                     <option>Round Trip</option>
@@ -1040,10 +1101,18 @@
                   </select>
                 </div>
                 <div class="input-wrap full">
-                  <button class="btn btn-primary" type="submit">Request Pricing</button>
+                  <button class="btn btn-primary" type="submit" id="quoteSubmitBtn">Get Estimate & Send Request</button>
                 </div>
               </form>
-              <div class="mini-note">Connect this form later to Formspree, EmailJS, Netlify Forms, or your booking system.</div>
+
+              <div id="quoteResult" class="quote-result" aria-live="polite"></div>
+              <div id="routeMap" aria-label="Trip route map"></div>
+              <div id="quoteStatus" class="form-status" aria-live="polite"></div>
+
+              <div class="mini-note">
+                Route estimate uses Google Maps. Final pricing may vary based on tolls, wait time, luggage, child seats,
+                vehicle type, extra stops, and special requests.
+              </div>
             </div>
           </div>
         </div>
@@ -1055,8 +1124,7 @@
         <div class="eyebrow">Our Services</div>
         <h2 class="section-title">Professional transportation for every type of trip</h2>
         <p class="section-text lead">
-          Your homepage should make it clear what you offer, who you serve, and why your service is different.
-          These are the main service categories most clients expect to see on a professional transportation website.
+          Luxury transportation for airport arrivals, hotels, business travel, weddings, events, and custom private rides.
         </p>
 
         <div class="card-grid">
@@ -1106,13 +1174,12 @@
           <div class="eyebrow">About The Brand</div>
           <h2 class="section-title">Built for clients who value comfort, reliability, and polished service</h2>
           <p class="section-text">
-            A strong luxury transportation homepage should immediately build trust. That means clear branding,
-            premium visuals, simple booking options, and service details that reassure the client they are choosing
-            a professional company.
-          </p>
-          <p class="section-text">
             Mina's Luxury Transportation is positioned as a premium private transportation service in Orlando,
             focused on smooth communication, dependable scheduling, and high-end presentation from reservation to arrival.
+          </p>
+          <p class="section-text">
+            Every trip is designed to feel private, organized, and stress-free whether you are arriving at the airport,
+            going to a resort, traveling for business, or planning transportation for an event.
           </p>
 
           <ul class="check-list">
@@ -1132,8 +1199,7 @@
         <div class="eyebrow">Fleet Options</div>
         <h2 class="section-title">Show your vehicle categories clearly</h2>
         <p class="section-text lead">
-          Even if you update the exact vehicles later, your site should show visitors what type of ride they can expect.
-          Replace the sample descriptions below with your real fleet information.
+          Replace these sample descriptions with your exact fleet later.
         </p>
 
         <div class="fleet-grid">
@@ -1175,7 +1241,7 @@
         <div class="eyebrow">Popular Destinations</div>
         <h2 class="section-title">Highlight the places clients often search for</h2>
         <p class="section-text lead">
-          This section helps with trust and local SEO. Replace or expand the locations below based on the areas you serve.
+          This section helps with trust and local SEO.
         </p>
 
         <div class="service-areas">
@@ -1198,13 +1264,12 @@
             <div class="eyebrow" style="color:#f1d79a;">Premium Booking Experience</div>
             <h2 class="section-title">Ready to reserve your ride?</h2>
             <p class="lead">
-              Make it easy for your visitors to take the next step. Your homepage should always include a strong,
-              visible booking call to action.
+              Request a quote, reserve your trip, or send a deposit online.
             </p>
           </div>
           <div class="btn-group" style="justify-content:flex-start; margin-top:0;">
             <a class="btn btn-primary" href="#contact">Request a Quote</a>
-            <a class="btn btn-secondary" href="tel:+10000000000">Call Now</a>
+            <a class="btn btn-secondary" href="https://square.link/u/YOUR_SQUARE_PAYMENT_LINK" target="_blank" rel="noopener">Pay Online</a>
           </div>
         </div>
       </div>
@@ -1251,12 +1316,12 @@
         <div class="faq-grid">
           <article class="faq-item">
             <h3>How do I request a quote?</h3>
-            <p>Clients can submit the quote form, call directly, or message through your preferred booking channel.</p>
+            <p>Use the quick quote form, the reservation form, call directly, or pay online after your trip details are confirmed.</p>
           </article>
 
           <article class="faq-item">
             <h3>Do you offer airport pickup and return trips?</h3>
-            <p>Yes. You can offer one-way or round-trip reservations for airport transportation and custom itineraries.</p>
+            <p>Yes. One-way, round-trip, and custom itinerary reservations can all be arranged.</p>
           </article>
 
           <article class="faq-item">
@@ -1266,17 +1331,17 @@
 
           <article class="faq-item">
             <h3>Do you provide child seats?</h3>
-            <p>Add your actual policy here. Many transportation companies list available car seat options on the site.</p>
+            <p>Add your actual policy here, including rear-facing, forward-facing, or booster seat availability.</p>
           </article>
 
           <article class="faq-item">
             <h3>Which areas do you serve?</h3>
-            <p>List your service area clearly, such as Orlando, surrounding cities, airports, cruise ports, and event venues.</p>
+            <p>Orlando, surrounding cities, airports, hotels, cruise ports, event venues, and custom destinations by request.</p>
           </article>
 
           <article class="faq-item">
             <h3>How early should I book?</h3>
-            <p>For best availability, encourage clients to reserve as early as possible, especially during peak travel dates and events.</p>
+            <p>For best availability, reserve as early as possible, especially during peak travel dates, cruise days, conventions, and major events.</p>
           </article>
         </div>
       </div>
@@ -1299,38 +1364,43 @@
               <p><strong>Email:</strong> <a href="mailto:info@yourdomain.com">info@yourdomain.com</a></p>
               <p><strong>Service Area:</strong> Orlando, Florida and surrounding destinations</p>
               <p><strong>Hours:</strong> By reservation / 24-7 booking inquiry support</p>
+              <div class="btn-group" style="margin-top:18px;">
+                <a class="btn btn-primary" href="tel:+10000000000">Call Now</a>
+                <a class="btn btn-secondary" href="https://square.link/u/YOUR_SQUARE_PAYMENT_LINK" target="_blank" rel="noopener">Pay Deposit</a>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="content-panel">
           <h2 class="section-title" style="font-size:2.2rem;">Request a Reservation</h2>
-          <form class="form-grid" onsubmit="handleContact(event)">
+          <form class="form-grid" id="contactForm" onsubmit="handleContact(event)">
             <div class="input-wrap">
               <label for="name">Full Name</label>
-              <input id="name" type="text" placeholder="Your name" required>
+              <input id="name" name="name" type="text" placeholder="Your name" required>
             </div>
             <div class="input-wrap">
               <label for="phone">Phone Number</label>
-              <input id="phone" type="tel" placeholder="Your phone" required>
+              <input id="phone" name="phone" type="tel" placeholder="Your phone" required>
             </div>
             <div class="input-wrap">
               <label for="email">Email</label>
-              <input id="email" type="email" placeholder="Your email" required>
+              <input id="email" name="email" type="email" placeholder="Your email" required>
             </div>
             <div class="input-wrap">
               <label for="travelDate">Travel Date</label>
-              <input id="travelDate" type="date" required>
+              <input id="travelDate" name="travelDate" type="date" required>
             </div>
             <div class="input-wrap full">
               <label for="details">Trip Details</label>
-              <textarea id="details" placeholder="Pickup, drop-off, number of passengers, luggage, flight details, child seat needs, or any other request"></textarea>
+              <textarea id="details" name="details" placeholder="Pickup, drop-off, number of passengers, luggage, flight details, child seat needs, or any other request"></textarea>
             </div>
             <div class="input-wrap full">
-              <button class="btn btn-primary" type="submit">Send Request</button>
+              <button class="btn btn-primary" type="submit" id="contactSubmitBtn">Send Request</button>
             </div>
           </form>
-          <div class="mini-note">This demo form shows the layout. Connect it to your email or booking platform before going live.</div>
+          <div id="contactStatus" class="form-status" aria-live="polite"></div>
+          <div class="mini-note">This form is ready for Formspree. Replace the placeholder Formspree IDs in the script below.</div>
         </div>
       </div>
     </section>
@@ -1383,12 +1453,24 @@
   <div class="float-actions" aria-label="Quick actions">
     <a class="float-btn call" href="tel:+10000000000" aria-label="Call now">✆</a>
     <a class="float-btn" href="#contact" aria-label="Open contact form">✉</a>
+    <a class="float-btn" href="https://square.link/u/YOUR_SQUARE_PAYMENT_LINK" target="_blank" rel="noopener" aria-label="Pay online">$</a>
   </div>
 
   <script>
+    const QUOTE_FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_QUOTE_FORM_ID';
+    const CONTACT_FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_CONTACT_FORM_ID';
+
     const nav = document.getElementById('siteNav');
     const menuBtn = document.getElementById('menuBtn');
     const year = document.getElementById('year');
+    const quoteForm = document.getElementById('quoteForm');
+    const contactForm = document.getElementById('contactForm');
+    const quoteStatus = document.getElementById('quoteStatus');
+    const contactStatus = document.getElementById('contactStatus');
+    const quoteResult = document.getElementById('quoteResult');
+    const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
+    const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+
     year.textContent = new Date().getFullYear();
 
     menuBtn.addEventListener('click', () => {
@@ -1399,15 +1481,304 @@
       link.addEventListener('click', () => nav.classList.remove('open'));
     });
 
-    function handleQuote(event) {
-      event.preventDefault();
-      alert('Quote request form submitted. Connect this form to your email or booking platform to make it live.');
+    function setMessage(el, type, message) {
+      el.className = '';
+      el.classList.add(type === 'success' ? 'form-status' : type === 'error' ? 'form-status' : 'form-status');
+      el.classList.add(type);
+      el.textContent = message;
+      el.style.display = 'block';
     }
 
-    function handleContact(event) {
-      event.preventDefault();
-      alert('Reservation request submitted. Connect this form to Formspree, EmailJS, Netlify Forms, or your backend to receive messages.');
+    function setQuoteMessage(type, html) {
+      quoteResult.className = 'quote-result ' + type;
+      quoteResult.innerHTML = html;
+      quoteResult.style.display = 'block';
     }
+
+    async function postToFormspree(endpoint, formData) {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data?.errors?.[0]?.message || 'Unable to send your request right now.');
+      }
+
+      return response;
+    }
+
+    function isPlaceholderEndpoint(endpoint) {
+      return endpoint.includes('YOUR_QUOTE_FORM_ID') || endpoint.includes('YOUR_CONTACT_FORM_ID');
+    }
+
+    let map;
+    let RouteClass;
+    let currentPolylines = [];
+    let mapReady = false;
+
+    async function initMap() {
+      const { Map } = await google.maps.importLibrary('maps');
+      const { Route } = await google.maps.importLibrary('routes');
+
+      RouteClass = Route;
+
+      map = new Map(document.getElementById('routeMap'), {
+        center: { lat: 28.5383, lng: -81.3792 },
+        zoom: 10,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true
+      });
+
+      mapReady = true;
+    }
+
+    function clearCurrentRoute() {
+      currentPolylines.forEach(polyline => polyline.setMap(null));
+      currentPolylines = [];
+    }
+
+    function getPriceEstimate(miles, serviceType, passengers) {
+      if (serviceType === 'Hourly Chauffeur') {
+        return {
+          label: 'Estimated hourly starting rate',
+          value: '$95/hr (3 hour minimum)'
+        };
+      }
+
+      let baseFare = 25;
+      let perMile = 3.5;
+      let minimum = 65;
+
+      if (serviceType === 'Airport Transfer') {
+        baseFare = 28;
+        perMile = 3.6;
+        minimum = 70;
+      } else if (serviceType === 'Round Trip') {
+        baseFare = 45;
+        perMile = 3.4;
+        minimum = 120;
+      } else if (serviceType === 'Wedding / Event') {
+        baseFare = 55;
+        perMile = 4.0;
+        minimum = 140;
+      } else if (serviceType === 'Cruise Transfer') {
+        baseFare = 38;
+        perMile = 3.9;
+        minimum = 95;
+      }
+
+      if (passengers === '4-6 passengers') {
+        baseFare += 20;
+        perMile += 0.5;
+        minimum += 25;
+      } else if (passengers === '7-10 passengers') {
+        baseFare += 45;
+        perMile += 1.15;
+        minimum += 55;
+      } else if (passengers === '11+ passengers') {
+        baseFare += 70;
+        perMile += 1.55;
+        minimum += 95;
+      }
+
+      const estimate = Math.max(minimum, baseFare + (miles * perMile));
+
+      return {
+        label: 'Estimated starting price',
+        value: '$' + estimate.toFixed(2)
+      };
+    }
+
+    async function calculateRouteEstimate() {
+      const pickup = document.getElementById('pickup').value.trim();
+      const dropoff = document.getElementById('dropoff').value.trim();
+      const passengers = document.getElementById('passengers').value;
+      const serviceType = document.getElementById('service').value;
+
+      if (!pickup || !dropoff) {
+        throw new Error('Please enter both pickup and drop-off locations.');
+      }
+
+      if (!mapReady || !RouteClass) {
+        throw new Error('Google Maps is still loading. Try again in a moment.');
+      }
+
+      const request = {
+        origin: pickup,
+        destination: dropoff,
+        travelMode: 'DRIVING',
+        routingPreference: 'TRAFFIC_AWARE',
+        units: 'IMPERIAL',
+        fields: ['path', 'distanceMeters', 'durationMillis', 'localizedValues']
+      };
+
+      const { routes } = await RouteClass.computeRoutes(request);
+
+      if (!routes || !routes.length) {
+        throw new Error('No route was found. Please check the addresses and try again.');
+      }
+
+      const route = routes[0];
+
+      clearCurrentRoute();
+      currentPolylines = route.createPolylines();
+      currentPolylines.forEach(polyline => polyline.setMap(map));
+
+      if (route.path && route.path.length) {
+        const bounds = new google.maps.LatLngBounds();
+        route.path.forEach(point => {
+          const lat = typeof point.lat === 'function' ? point.lat() : point.lat;
+          const lng = typeof point.lng === 'function' ? point.lng() : point.lng;
+          if (typeof lat === 'number' && typeof lng === 'number') {
+            bounds.extend({ lat, lng });
+          }
+        });
+        map.fitBounds(bounds, 60);
+      }
+
+      const miles = (route.distanceMeters || 0) / 1609.344;
+      const minutes = Math.round((route.durationMillis || 0) / 60000);
+      const localizedDistance = route.localizedValues?.distance || miles.toFixed(1) + ' mi';
+      const localizedDuration = route.localizedValues?.duration || minutes + ' mins';
+      const price = getPriceEstimate(miles, serviceType, passengers);
+
+      setQuoteMessage(
+        'success',
+        `<strong>Estimated Trip Details</strong>
+         Distance: ${localizedDistance}<br>
+         Drive time: about ${localizedDuration}<br>
+         ${price.label}: ${price.value}<br><br>
+         <small>Final pricing may change based on tolls, exact vehicle used, extra stops, wait time, luggage, and special requests.</small>`
+      );
+
+      return {
+        pickup,
+        dropoff,
+        passengers,
+        serviceType,
+        miles: miles.toFixed(1),
+        duration: localizedDuration,
+        priceLabel: price.label,
+        priceValue: price.value
+      };
+    }
+
+    async function handleQuote(event) {
+      event.preventDefault();
+      quoteStatus.style.display = 'none';
+      quoteSubmitBtn.disabled = true;
+      quoteSubmitBtn.textContent = 'Working...';
+
+      try {
+        const estimate = await calculateRouteEstimate();
+
+        if (isPlaceholderEndpoint(QUOTE_FORMSPREE_ENDPOINT)) {
+          setMessage(
+            quoteStatus,
+            'info',
+            'Your map estimate is working. Replace YOUR_QUOTE_FORM_ID in the script to send quote requests to Formspree.'
+          );
+          return;
+        }
+
+        const formData = new FormData(quoteForm);
+        formData.append('form_type', 'Quick Quote Request');
+        formData.append('estimated_distance_miles', estimate.miles);
+        formData.append('estimated_duration', estimate.duration);
+        formData.append('estimated_price', estimate.priceValue);
+
+        await postToFormspree(QUOTE_FORMSPREE_ENDPOINT, formData);
+
+        setMessage(
+          quoteStatus,
+          'success',
+          'Estimate ready and quote request sent successfully.'
+        );
+      } catch (error) {
+        setQuoteMessage('error', `<strong>Could not complete estimate</strong>${error.message}`);
+      } finally {
+        quoteSubmitBtn.disabled = false;
+        quoteSubmitBtn.textContent = 'Get Estimate & Send Request';
+      }
+    }
+
+    async function handleContact(event) {
+      event.preventDefault();
+      contactStatus.style.display = 'none';
+      contactSubmitBtn.disabled = true;
+      contactSubmitBtn.textContent = 'Sending...';
+
+      try {
+        if (isPlaceholderEndpoint(CONTACT_FORMSPREE_ENDPOINT)) {
+          setMessage(
+            contactStatus,
+            'info',
+            'Replace YOUR_CONTACT_FORM_ID in the script to connect this form to Formspree.'
+          );
+          return;
+        }
+
+        const formData = new FormData(contactForm);
+        formData.append('form_type', 'Reservation Request');
+
+        await postToFormspree(CONTACT_FORMSPREE_ENDPOINT, formData);
+
+        setMessage(
+          contactStatus,
+          'success',
+          'Your reservation request was sent successfully.'
+        );
+        contactForm.reset();
+      } catch (error) {
+        setMessage(contactStatus, 'error', error.message);
+      } finally {
+        contactSubmitBtn.disabled = false;
+        contactSubmitBtn.textContent = 'Send Request';
+      }
+    }
+
+    window.addEventListener('load', async () => {
+      try {
+        await initMap();
+      } catch (error) {
+        setQuoteMessage(
+          'error',
+          '<strong>Google Maps did not load.</strong> Add your Google Maps API key in the loader script at the bottom of this file.'
+        );
+      }
+    });
+  </script>
+
+  <!-- Google Maps JavaScript API loader -->
+  <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your real browser API key -->
+  <script>
+    (g => {
+      var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
+      b = b[c] || (b[c] = {});
+      var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
+      u = () => h || (h = new Promise(async (f, n) => {
+        await (a = m.createElement("script"));
+        e.set("libraries", [...r] + "");
+        for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+        e.set("callback", c + ".maps." + q);
+        a.src = `https://maps.googleapis.com/maps/api/js?` + e;
+        d[q] = f;
+        a.onerror = () => h = n(Error(p + " could not load."));
+        a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+        m.head.append(a);
+      }));
+      d[l] ? console.warn(p + " only loads once. Ignoring:", g) :
+      d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+    })({
+      key: "YOUR_GOOGLE_MAPS_API_KEY",
+      v: "weekly"
+    });
   </script>
 </body>
 </html>
