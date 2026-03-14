@@ -1471,6 +1471,11 @@
     const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
     const contactSubmitBtn = document.getElementById('contactSubmitBtn');
 
+    let map = null;
+    let directionsService = null;
+    let directionsRenderer = null;
+    let mapReady = false;
+
     year.textContent = new Date().getFullYear();
 
     menuBtn.addEventListener('click', () => {
@@ -1482,9 +1487,7 @@
     });
 
     function setMessage(el, type, message) {
-      el.className = '';
-      el.classList.add(type === 'success' ? 'form-status' : type === 'error' ? 'form-status' : 'form-status');
-      el.classList.add(type);
+      el.className = 'form-status ' + type;
       el.textContent = message;
       el.style.display = 'block';
     }
@@ -1493,6 +1496,12 @@
       quoteResult.className = 'quote-result ' + type;
       quoteResult.innerHTML = html;
       quoteResult.style.display = 'block';
+    }
+
+    function clearQuoteMessage() {
+      quoteResult.style.display = 'none';
+      quoteResult.innerHTML = '';
+      quoteResult.className = 'quote-result';
     }
 
     async function postToFormspree(endpoint, formData) {
@@ -1516,31 +1525,35 @@
       return endpoint.includes('YOUR_QUOTE_FORM_ID') || endpoint.includes('YOUR_CONTACT_FORM_ID');
     }
 
-    let map;
-    let RouteClass;
-    let currentPolylines = [];
-    let mapReady = false;
+    window.initGoogleMap = function () {
+      try {
+        map = new google.maps.Map(document.getElementById('routeMap'), {
+          center: { lat: 28.5383, lng: -81.3792 },
+          zoom: 10,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: true
+        });
 
-    async function initMap() {
-      const { Map } = await google.maps.importLibrary('maps');
-      const { Route } = await google.maps.importLibrary('routes');
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: false
+        });
 
-      RouteClass = Route;
-
-      map = new Map(document.getElementById('routeMap'), {
-        center: { lat: 28.5383, lng: -81.3792 },
-        zoom: 10,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: true
-      });
-
-      mapReady = true;
-    }
+        mapReady = true;
+      } catch (error) {
+        setQuoteMessage(
+          'error',
+          '<strong>Google Maps did not load.</strong>Please check your API key, billing, and website restrictions.'
+        );
+      }
+    };
 
     function clearCurrentRoute() {
-      currentPolylines.forEach(polyline => polyline.setMap(null));
-      currentPolylines = [];
+      if (directionsRenderer) {
+        directionsRenderer.set('directions', null);
+      }
     }
 
     function getPriceEstimate(miles, serviceType, passengers) {
@@ -1595,6 +1608,18 @@
       };
     }
 
+    function routeRequest(request) {
+      return new Promise((resolve, reject) => {
+        directionsService.route(request, (result, status) => {
+          if (status === 'OK' && result) {
+            resolve(result);
+          } else {
+            reject(new Error('Unable to calculate this route right now.'));
+          }
+        });
+      });
+    }
+
     async function calculateRouteEstimate() {
       const pickup = document.getElementById('pickup').value.trim();
       const dropoff = document.getElementById('dropoff').value.trim();
@@ -1605,47 +1630,24 @@
         throw new Error('Please enter both pickup and drop-off locations.');
       }
 
-      if (!mapReady || !RouteClass) {
-        throw new Error('Google Maps is still loading. Try again in a moment.');
+      if (!mapReady || !directionsService || !directionsRenderer) {
+        throw new Error('Google Maps is still loading. Please refresh and try again.');
       }
 
-      const request = {
+      const result = await routeRequest({
         origin: pickup,
         destination: dropoff,
-        travelMode: 'DRIVING',
-        routingPreference: 'TRAFFIC_AWARE',
-        units: 'IMPERIAL',
-        fields: ['path', 'distanceMeters', 'durationMillis', 'localizedValues']
-      };
-
-      const { routes } = await RouteClass.computeRoutes(request);
-
-      if (!routes || !routes.length) {
-        throw new Error('No route was found. Please check the addresses and try again.');
-      }
-
-      const route = routes[0];
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      });
 
       clearCurrentRoute();
-      currentPolylines = route.createPolylines();
-      currentPolylines.forEach(polyline => polyline.setMap(map));
+      directionsRenderer.setDirections(result);
 
-      if (route.path && route.path.length) {
-        const bounds = new google.maps.LatLngBounds();
-        route.path.forEach(point => {
-          const lat = typeof point.lat === 'function' ? point.lat() : point.lat;
-          const lng = typeof point.lng === 'function' ? point.lng() : point.lng;
-          if (typeof lat === 'number' && typeof lng === 'number') {
-            bounds.extend({ lat, lng });
-          }
-        });
-        map.fitBounds(bounds, 60);
-      }
-
-      const miles = (route.distanceMeters || 0) / 1609.344;
-      const minutes = Math.round((route.durationMillis || 0) / 60000);
-      const localizedDistance = route.localizedValues?.distance || miles.toFixed(1) + ' mi';
-      const localizedDuration = route.localizedValues?.duration || minutes + ' mins';
+      const leg = result.routes[0].legs[0];
+      const miles = (leg.distance.value || 0) / 1609.344;
+      const localizedDistance = leg.distance.text || miles.toFixed(1) + ' mi';
+      const localizedDuration = leg.duration.text || 'N/A';
       const price = getPriceEstimate(miles, serviceType, passengers);
 
       setQuoteMessage(
@@ -1664,13 +1666,13 @@
         serviceType,
         miles: miles.toFixed(1),
         duration: localizedDuration,
-        priceLabel: price.label,
         priceValue: price.value
       };
     }
 
     async function handleQuote(event) {
       event.preventDefault();
+      clearQuoteMessage();
       quoteStatus.style.display = 'none';
       quoteSubmitBtn.disabled = true;
       quoteSubmitBtn.textContent = 'Working...';
@@ -1742,43 +1744,12 @@
         contactSubmitBtn.textContent = 'Send Request';
       }
     }
-
-    window.addEventListener('load', async () => {
-      try {
-        await initMap();
-      } catch (error) {
-        setQuoteMessage(
-          'error',
-          '<strong>Google Maps did not load.</strong> Add your Google Maps API key in the loader script at the bottom of this file.'
-        );
-      }
-    });
   </script>
 
-  <!-- Google Maps JavaScript API loader -->
-  <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your real browser API key -->
-  <script>
-    (g => {
-      var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
-      b = b[c] || (b[c] = {});
-      var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
-      u = () => h || (h = new Promise(async (f, n) => {
-        await (a = m.createElement("script"));
-        e.set("libraries", [...r] + "");
-        for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
-        e.set("callback", c + ".maps." + q);
-        a.src = `https://maps.googleapis.com/maps/api/js?` + e;
-        d[q] = f;
-        a.onerror = () => h = n(Error(p + " could not load."));
-        a.nonce = m.querySelector("script[nonce]")?.nonce || "";
-        m.head.append(a);
-      }));
-      d[l] ? console.warn(p + " only loads once. Ignoring:", g) :
-      d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
-    })({
-      key: "AIzaSyDsCRq7iiL-Rdq4IX61C7kEi_YP1Xxh3mc",
-      v: "weekly"
-    });
-  </script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCRq7iiL-Rdq4IX61C7kEi_YP1Xxh3mc&callback=initGoogleMap"
+    async
+    defer
+  ></script>
 </body>
 </html>
