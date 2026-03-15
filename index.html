@@ -508,11 +508,11 @@
 
     #routeMap {
       width: 100%;
-      height: 320px;
+      height: 360px;
       margin-top: 14px;
       border-radius: 18px;
       overflow: hidden;
-      border: 1px solid rgba(15,35,66,0.10);
+      border: 2px solid rgba(199,164,90,0.50);
       box-shadow: 0 12px 28px rgba(15,35,66,0.08);
       background: #eef2f7;
     }
@@ -947,7 +947,7 @@
       }
 
       #routeMap {
-        height: 260px;
+        height: 280px;
       }
     }
   </style>
@@ -1065,11 +1065,11 @@
               <form class="form-grid" id="quoteForm" onsubmit="handleQuote(event)">
                 <div class="input-wrap">
                   <label for="pickup">Pickup</label>
-                  <input id="pickup" name="pickup" type="text" placeholder="Airport, hotel, address" required>
+                  <input id="pickup" name="pickup" type="text" placeholder="Airport, hotel, address" autocomplete="off" required>
                 </div>
                 <div class="input-wrap">
                   <label for="dropoff">Drop-off</label>
-                  <input id="dropoff" name="dropoff" type="text" placeholder="Destination" required>
+                  <input id="dropoff" name="dropoff" type="text" placeholder="Destination" autocomplete="off" required>
                 </div>
                 <div class="input-wrap">
                   <label for="date">Date</label>
@@ -1110,8 +1110,7 @@
               <div id="quoteStatus" class="form-status" aria-live="polite"></div>
 
               <div class="mini-note">
-                Route estimate uses Google Maps. Final pricing may vary based on tolls, wait time, luggage, child seats,
-                vehicle type, extra stops, and special requests.
+                Start typing a pickup and drop-off location, select the suggestions, then click the button to calculate distance, travel time, and price.
               </div>
             </div>
           </div>
@@ -1471,10 +1470,15 @@
     const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
     const contactSubmitBtn = document.getElementById('contactSubmitBtn');
 
+    const pickupInput = document.getElementById('pickup');
+    const dropoffInput = document.getElementById('dropoff');
+
     let map = null;
     let directionsService = null;
     let directionsRenderer = null;
     let mapReady = false;
+    let pickupAutocomplete = null;
+    let dropoffAutocomplete = null;
 
     year.textContent = new Date().getFullYear();
 
@@ -1525,7 +1529,72 @@
       return endpoint.includes('YOUR_QUOTE_FORM_ID') || endpoint.includes('YOUR_CONTACT_FORM_ID');
     }
 
-    window.initGoogleMap = function () {
+    function clearCurrentRoute() {
+      if (directionsRenderer) {
+        directionsRenderer.setDirections({ routes: [] });
+      }
+    }
+
+    function getPriceEstimate(miles, serviceType, passengers) {
+      let minimumCharge = 75;
+      let baseFare = 20;
+      let pricePerMile = 3.50;
+
+      if (serviceType === 'Airport Transfer') {
+        minimumCharge = 80;
+        baseFare = 25;
+        pricePerMile = 3.75;
+      } else if (serviceType === 'Round Trip') {
+        minimumCharge = 140;
+        baseFare = 40;
+        pricePerMile = 3.40;
+      } else if (serviceType === 'Hourly Chauffeur') {
+        return {
+          label: 'Estimated hourly starting rate',
+          value: '$95/hr (3 hour minimum)'
+        };
+      } else if (serviceType === 'Wedding / Event') {
+        minimumCharge = 150;
+        baseFare = 50;
+        pricePerMile = 4.00;
+      } else if (serviceType === 'Cruise Transfer') {
+        minimumCharge = 95;
+        baseFare = 30;
+        pricePerMile = 3.90;
+      }
+
+      if (passengers === '4-6 passengers') {
+        baseFare += 20;
+        pricePerMile += 0.50;
+      } else if (passengers === '7-10 passengers') {
+        baseFare += 45;
+        pricePerMile += 1.00;
+      } else if (passengers === '11+ passengers') {
+        baseFare += 70;
+        pricePerMile += 1.50;
+      }
+
+      const price = Math.max(minimumCharge, baseFare + (miles * pricePerMile));
+
+      return {
+        label: 'Estimated starting price',
+        value: '$' + price.toFixed(2)
+      };
+    }
+
+    function routeRequest(request) {
+      return new Promise((resolve, reject) => {
+        directionsService.route(request, (result, status) => {
+          if (status === 'OK' && result) {
+            resolve(result);
+          } else {
+            reject(new Error('Unable to calculate this route right now. Please check the addresses and try again.'));
+          }
+        });
+      });
+    }
+
+    function initGoogleMap() {
       try {
         map = new google.maps.Map(document.getElementById('routeMap'), {
           center: { lat: 28.5383, lng: -81.3792 },
@@ -1536,93 +1605,48 @@
         });
 
         directionsService = new google.maps.DirectionsService();
+
         directionsRenderer = new google.maps.DirectionsRenderer({
           map: map,
           suppressMarkers: false
+        });
+
+        pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput, {
+          componentRestrictions: { country: 'us' },
+          fields: ['formatted_address', 'geometry', 'name', 'place_id']
+        });
+
+        dropoffAutocomplete = new google.maps.places.Autocomplete(dropoffInput, {
+          componentRestrictions: { country: 'us' },
+          fields: ['formatted_address', 'geometry', 'name', 'place_id']
+        });
+
+        pickupAutocomplete.addListener('place_changed', () => {
+          const place = pickupAutocomplete.getPlace();
+          if (place && place.formatted_address) {
+            pickupInput.value = place.formatted_address;
+          }
+        });
+
+        dropoffAutocomplete.addListener('place_changed', () => {
+          const place = dropoffAutocomplete.getPlace();
+          if (place && place.formatted_address) {
+            dropoffInput.value = place.formatted_address;
+          }
         });
 
         mapReady = true;
       } catch (error) {
         setQuoteMessage(
           'error',
-          '<strong>Google Maps did not load.</strong>Please check your API key, billing, and website restrictions.'
+          '<strong>Google Maps did not load.</strong> Please check your API key, billing, and API restrictions.'
         );
       }
-    };
-
-    function clearCurrentRoute() {
-      if (directionsRenderer) {
-        directionsRenderer.set('directions', null);
-      }
-    }
-
-    function getPriceEstimate(miles, serviceType, passengers) {
-      if (serviceType === 'Hourly Chauffeur') {
-        return {
-          label: 'Estimated hourly starting rate',
-          value: '$95/hr (3 hour minimum)'
-        };
-      }
-
-      let baseFare = 25;
-      let perMile = 3.5;
-      let minimum = 65;
-
-      if (serviceType === 'Airport Transfer') {
-        baseFare = 28;
-        perMile = 3.6;
-        minimum = 70;
-      } else if (serviceType === 'Round Trip') {
-        baseFare = 45;
-        perMile = 3.4;
-        minimum = 120;
-      } else if (serviceType === 'Wedding / Event') {
-        baseFare = 55;
-        perMile = 4.0;
-        minimum = 140;
-      } else if (serviceType === 'Cruise Transfer') {
-        baseFare = 38;
-        perMile = 3.9;
-        minimum = 95;
-      }
-
-      if (passengers === '4-6 passengers') {
-        baseFare += 20;
-        perMile += 0.5;
-        minimum += 25;
-      } else if (passengers === '7-10 passengers') {
-        baseFare += 45;
-        perMile += 1.15;
-        minimum += 55;
-      } else if (passengers === '11+ passengers') {
-        baseFare += 70;
-        perMile += 1.55;
-        minimum += 95;
-      }
-
-      const estimate = Math.max(minimum, baseFare + (miles * perMile));
-
-      return {
-        label: 'Estimated starting price',
-        value: '$' + estimate.toFixed(2)
-      };
-    }
-
-    function routeRequest(request) {
-      return new Promise((resolve, reject) => {
-        directionsService.route(request, (result, status) => {
-          if (status === 'OK' && result) {
-            resolve(result);
-          } else {
-            reject(new Error('Unable to calculate this route right now.'));
-          }
-        });
-      });
     }
 
     async function calculateRouteEstimate() {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
+      const pickup = pickupInput.value.trim();
+      const dropoff = dropoffInput.value.trim();
       const passengers = document.getElementById('passengers').value;
       const serviceType = document.getElementById('service').value;
 
@@ -1684,7 +1708,7 @@
           setMessage(
             quoteStatus,
             'info',
-            'Your map estimate is working. Replace YOUR_QUOTE_FORM_ID in the script to send quote requests to Formspree.'
+            'Your route estimate is working. Replace YOUR_QUOTE_FORM_ID in the script to send quote requests to Formspree.'
           );
           return;
         }
@@ -1697,11 +1721,7 @@
 
         await postToFormspree(QUOTE_FORMSPREE_ENDPOINT, formData);
 
-        setMessage(
-          quoteStatus,
-          'success',
-          'Estimate ready and quote request sent successfully.'
-        );
+        setMessage(quoteStatus, 'success', 'Estimate ready and quote request sent successfully.');
       } catch (error) {
         setQuoteMessage('error', `<strong>Could not complete estimate</strong>${error.message}`);
       } finally {
@@ -1731,11 +1751,7 @@
 
         await postToFormspree(CONTACT_FORMSPREE_ENDPOINT, formData);
 
-        setMessage(
-          contactStatus,
-          'success',
-          'Your reservation request was sent successfully.'
-        );
+        setMessage(contactStatus, 'success', 'Your reservation request was sent successfully.');
         contactForm.reset();
       } catch (error) {
         setMessage(contactStatus, 'error', error.message);
@@ -1747,7 +1763,7 @@
   </script>
 
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCRq7iiL-Rdq4IX61C7kEi_YP1Xxh3mc&callback=initGoogleMap"
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&loading=async&libraries=places&callback=initGoogleMap"
     async
     defer
   ></script>
