@@ -46,15 +46,10 @@
       --navy-2: #162f57;
       --gold: #c7a45a;
       --gold-soft: #e5cc8f;
-      --dark: #0b1320;
       --text: #263447;
       --muted: #64748b;
-      --bg: #f8f8f6;
       --white: #ffffff;
-      --line: rgba(15, 35, 66, 0.12);
       --shadow: 0 18px 50px rgba(15, 35, 66, 0.12);
-      --radius: 22px;
-      --radius-sm: 14px;
       --max: 1240px;
     }
 
@@ -79,9 +74,7 @@
       margin: 0 auto;
     }
 
-    .section {
-      padding: 88px 0;
-    }
+    .section { padding: 88px 0; }
 
     .eyebrow {
       display: inline-flex;
@@ -120,8 +113,8 @@
       font-weight: 700;
     }
 
-    .section-text,
     .lead,
+    .section-text,
     .muted {
       color: var(--muted);
     }
@@ -240,9 +233,7 @@
       box-shadow: 0 8px 24px rgba(15,35,66,0.08);
     }
 
-    .brand-text {
-      min-width: 0;
-    }
+    .brand-text { min-width: 0; }
 
     .brand-name {
       font-family: 'Cormorant Garamond', serif;
@@ -357,7 +348,7 @@
       color: #fff;
       box-shadow: 0 30px 60px rgba(15,35,66,0.28);
       overflow: hidden;
-      min-height: 700px;
+      min-height: 760px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -508,11 +499,11 @@
 
     #routeMap {
       width: 100%;
-      height: 320px;
+      height: 360px;
       margin-top: 14px;
       border-radius: 18px;
       overflow: hidden;
-      border: 1px solid rgba(15,35,66,0.10);
+      border: 2px solid rgba(199,164,90,0.50);
       box-shadow: 0 12px 28px rgba(15,35,66,0.08);
       background: #eef2f7;
     }
@@ -947,7 +938,7 @@
       }
 
       #routeMap {
-        height: 260px;
+        height: 280px;
       }
     }
   </style>
@@ -1065,11 +1056,11 @@
               <form class="form-grid" id="quoteForm" onsubmit="handleQuote(event)">
                 <div class="input-wrap">
                   <label for="pickup">Pickup</label>
-                  <input id="pickup" name="pickup" type="text" placeholder="Airport, hotel, address" required>
+                  <input id="pickup" name="pickup" type="text" placeholder="Airport, hotel, address" autocomplete="off" required>
                 </div>
                 <div class="input-wrap">
                   <label for="dropoff">Drop-off</label>
-                  <input id="dropoff" name="dropoff" type="text" placeholder="Destination" required>
+                  <input id="dropoff" name="dropoff" type="text" placeholder="Destination" autocomplete="off" required>
                 </div>
                 <div class="input-wrap">
                   <label for="date">Date</label>
@@ -1110,8 +1101,7 @@
               <div id="quoteStatus" class="form-status" aria-live="polite"></div>
 
               <div class="mini-note">
-                Route estimate uses Google Maps. Final pricing may vary based on tolls, wait time, luggage, child seats,
-                vehicle type, extra stops, and special requests.
+                Start typing a pickup and drop-off location, choose the suggestions, then click the button to calculate distance, travel time, and price.
               </div>
             </div>
           </div>
@@ -1470,11 +1460,15 @@
     const quoteResult = document.getElementById('quoteResult');
     const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
     const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+    const pickupInput = document.getElementById('pickup');
+    const dropoffInput = document.getElementById('dropoff');
 
     let map = null;
     let directionsService = null;
     let directionsRenderer = null;
     let mapReady = false;
+    let pickupAutocomplete = null;
+    let dropoffAutocomplete = null;
 
     year.textContent = new Date().getFullYear();
 
@@ -1508,9 +1502,7 @@
       const response = await fetch(endpoint, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
       if (!response.ok) {
@@ -1524,31 +1516,6 @@
     function isPlaceholderEndpoint(endpoint) {
       return endpoint.includes('YOUR_QUOTE_FORM_ID') || endpoint.includes('YOUR_CONTACT_FORM_ID');
     }
-
-    window.initGoogleMap = function () {
-      try {
-        map = new google.maps.Map(document.getElementById('routeMap'), {
-          center: { lat: 28.5383, lng: -81.3792 },
-          zoom: 10,
-          mapTypeControl: false,
-          streetViewControl: false,
-          fullscreenControl: true
-        });
-
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer({
-          map: map,
-          suppressMarkers: false
-        });
-
-        mapReady = true;
-      } catch (error) {
-        setQuoteMessage(
-          'error',
-          '<strong>Google Maps did not load.</strong>Please check your API key, billing, and website restrictions.'
-        );
-      }
-    };
 
     function clearCurrentRoute() {
       if (directionsRenderer) {
@@ -1564,47 +1531,44 @@
         };
       }
 
-      let baseFare = 25;
-      let perMile = 3.5;
-      let minimum = 65;
+      let minimumCharge = 75;
+      let baseFare = 20;
+      let pricePerMile = 3.50;
 
       if (serviceType === 'Airport Transfer') {
-        baseFare = 28;
-        perMile = 3.6;
-        minimum = 70;
+        minimumCharge = 80;
+        baseFare = 25;
+        pricePerMile = 3.75;
       } else if (serviceType === 'Round Trip') {
-        baseFare = 45;
-        perMile = 3.4;
-        minimum = 120;
+        minimumCharge = 140;
+        baseFare = 40;
+        pricePerMile = 3.40;
       } else if (serviceType === 'Wedding / Event') {
-        baseFare = 55;
-        perMile = 4.0;
-        minimum = 140;
+        minimumCharge = 150;
+        baseFare = 50;
+        pricePerMile = 4.00;
       } else if (serviceType === 'Cruise Transfer') {
-        baseFare = 38;
-        perMile = 3.9;
-        minimum = 95;
+        minimumCharge = 95;
+        baseFare = 30;
+        pricePerMile = 3.90;
       }
 
       if (passengers === '4-6 passengers') {
         baseFare += 20;
-        perMile += 0.5;
-        minimum += 25;
+        pricePerMile += 0.50;
       } else if (passengers === '7-10 passengers') {
         baseFare += 45;
-        perMile += 1.15;
-        minimum += 55;
+        pricePerMile += 1.00;
       } else if (passengers === '11+ passengers') {
         baseFare += 70;
-        perMile += 1.55;
-        minimum += 95;
+        pricePerMile += 1.50;
       }
 
-      const estimate = Math.max(minimum, baseFare + (miles * perMile));
+      const price = Math.max(minimumCharge, baseFare + (miles * pricePerMile));
 
       return {
         label: 'Estimated starting price',
-        value: '$' + estimate.toFixed(2)
+        value: '$' + price.toFixed(2)
       };
     }
 
@@ -1614,15 +1578,65 @@
           if (status === 'OK' && result) {
             resolve(result);
           } else {
-            reject(new Error('Unable to calculate this route right now.'));
+            reject(new Error('Unable to calculate this route right now. Please check the addresses and try again.'));
           }
         });
       });
     }
 
+    window.initGoogleMap = function () {
+      try {
+        map = new google.maps.Map(document.getElementById('routeMap'), {
+          center: { lat: 28.5383, lng: -81.3792 },
+          zoom: 10,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: true
+        });
+
+        directionsService = new google.maps.DirectionsService();
+
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: false
+        });
+
+        pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput, {
+          componentRestrictions: { country: 'us' },
+          fields: ['formatted_address', 'geometry', 'name', 'place_id']
+        });
+
+        dropoffAutocomplete = new google.maps.places.Autocomplete(dropoffInput, {
+          componentRestrictions: { country: 'us' },
+          fields: ['formatted_address', 'geometry', 'name', 'place_id']
+        });
+
+        pickupAutocomplete.addListener('place_changed', () => {
+          const place = pickupAutocomplete.getPlace();
+          if (place && place.formatted_address) {
+            pickupInput.value = place.formatted_address;
+          }
+        });
+
+        dropoffAutocomplete.addListener('place_changed', () => {
+          const place = dropoffAutocomplete.getPlace();
+          if (place && place.formatted_address) {
+            dropoffInput.value = place.formatted_address;
+          }
+        });
+
+        mapReady = true;
+      } catch (error) {
+        setQuoteMessage(
+          'error',
+          '<strong>Google Maps did not load.</strong> Please check your API key, billing, Places API, Directions API, and website restrictions.'
+        );
+      }
+    };
+
     async function calculateRouteEstimate() {
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
+      const pickup = pickupInput.value.trim();
+      const dropoff = dropoffInput.value.trim();
       const passengers = document.getElementById('passengers').value;
       const serviceType = document.getElementById('service').value;
 
@@ -1684,7 +1698,7 @@
           setMessage(
             quoteStatus,
             'info',
-            'Your map estimate is working. Replace YOUR_QUOTE_FORM_ID in the script to send quote requests to Formspree.'
+            'Route estimate works. Replace YOUR_QUOTE_FORM_ID to send quote requests to Formspree.'
           );
           return;
         }
@@ -1697,11 +1711,7 @@
 
         await postToFormspree(QUOTE_FORMSPREE_ENDPOINT, formData);
 
-        setMessage(
-          quoteStatus,
-          'success',
-          'Estimate ready and quote request sent successfully.'
-        );
+        setMessage(quoteStatus, 'success', 'Estimate ready and quote request sent successfully.');
       } catch (error) {
         setQuoteMessage('error', `<strong>Could not complete estimate</strong>${error.message}`);
       } finally {
@@ -1721,7 +1731,7 @@
           setMessage(
             contactStatus,
             'info',
-            'Replace YOUR_CONTACT_FORM_ID in the script to connect this form to Formspree.'
+            'Replace YOUR_CONTACT_FORM_ID to connect this form to Formspree.'
           );
           return;
         }
@@ -1731,11 +1741,7 @@
 
         await postToFormspree(CONTACT_FORMSPREE_ENDPOINT, formData);
 
-        setMessage(
-          contactStatus,
-          'success',
-          'Your reservation request was sent successfully.'
-        );
+        setMessage(contactStatus, 'success', 'Your reservation request was sent successfully.');
         contactForm.reset();
       } catch (error) {
         setMessage(contactStatus, 'error', error.message);
@@ -1747,7 +1753,7 @@
   </script>
 
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi27viX5DgWWSGleNfC0dYzW33qBgNzYA&callback=initGoogleMap"
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&loading=async&libraries=places&callback=initGoogleMap"
     async
     defer
   ></script>
