@@ -1,3 +1,12 @@
+Use this as your **GitHub `index.html`**.
+It keeps the frontend on GitHub Pages, sends **Pay Online** to your **Vercel payment endpoint**, and uses Google’s newer **Place Autocomplete widget** with the `gmp-select` event, which requires **Places API (New)**. Also, if you change Vercel environment variables, you must **redeploy** for them to apply. ([Google for Developers][1])
+
+Replace only these two placeholders before publishing:
+
+* `YOUR_GOOGLE_MAPS_API_KEY`
+* `https://YOUR-VERCEL-PROJECT.vercel.app/api/create-payment-link`
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -348,7 +357,7 @@
       color: #fff;
       box-shadow: 0 30px 60px rgba(15,35,66,0.28);
       overflow: hidden;
-      min-height: 820px;
+      min-height: 860px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -826,6 +835,7 @@
       border: 1px solid rgba(15,35,66,0.1);
       background: white;
       color: var(--navy);
+      cursor: pointer;
     }
 
     .float-btn.call {
@@ -843,8 +853,6 @@
       --gmp-mat-color-primary: #0f2342;
       --gmp-mat-color-outline: rgba(15,35,66,0.12);
       --gmp-mat-font-family: 'Inter', sans-serif;
-      --gmp-mat-font-body-medium: 500 16px/1.4 'Inter', sans-serif;
-      --gmp-mat-font-label-large: 600 14px/1.2 'Inter', sans-serif;
       border: 1px solid rgba(15,35,66,0.12);
       background: #fbfbfb;
     }
@@ -907,7 +915,6 @@
 
     @media (max-width: 700px) {
       .section { padding: 72px 0; }
-
       .hero { padding-top: 34px; }
 
       .hero-card,
@@ -976,7 +983,7 @@
         </div>
 
         <div class="nav-cta">
-          <a class="btn btn-secondary hidden-mobile" href="https://YOUR-VERCEL-APP.vercel.app" target="_blank" rel="noopener">Pay Online</a>
+          <button class="btn btn-secondary hidden-mobile" type="button" id="payOnlineNavBtn">Pay Online</button>
           <a class="btn btn-primary" href="tel:+14073690643">Book Now</a>
           <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
         </div>
@@ -991,9 +998,9 @@
           <div class="eyebrow">Premium Chauffeur Experience</div>
           <h1 class="title">Luxury transportation that makes every arrival feel first class.</h1>
           <p class="lead">
-            From airport pickups and hotel transfers to Disney, Universal, Cape Canaveral, weddings,
-            executive travel, and special events, Mina’s Luxury Transportation delivers dependable private
-            service with comfort, professionalism, and attention to detail.
+            From airport pickups and hotel transfers to Disney, Universal, Cape Canaveral,
+            weddings, executive travel, and special events, Mina’s Luxury Transportation
+            delivers dependable private service with comfort, professionalism, and attention to detail.
           </p>
 
           <div class="btn-group">
@@ -1121,8 +1128,8 @@
         <div class="eyebrow">Our Services</div>
         <h2 class="section-title">Professional transportation for every type of trip</h2>
         <p class="section-text lead">
-          Luxury transportation for airport arrivals, Disney and Universal transportation, business travel,
-          weddings, cruise transfers, and custom private rides.
+          Luxury transportation for airport arrivals, Disney and Universal transportation,
+          business travel, weddings, cruise transfers, and custom private rides.
         </p>
 
         <div class="card-grid">
@@ -1262,12 +1269,12 @@
             <div class="eyebrow" style="color:#f1d79a;">Premium Booking Experience</div>
             <h2 class="section-title">Ready to reserve your ride?</h2>
             <p class="lead">
-              Request a quote, reserve your trip, or send a payment online after your Vercel checkout is connected.
+              Request a quote, reserve your trip, or pay online directly.
             </p>
           </div>
           <div class="btn-group" style="justify-content:flex-start; margin-top:0;">
             <a class="btn btn-primary" href="#contact">Request a Quote</a>
-            <a class="btn btn-secondary" href="https://YOUR-VERCEL-APP.vercel.app" target="_blank" rel="noopener">Pay Online</a>
+            <button class="btn btn-secondary" type="button" id="payOnlineCtaBtn">Pay Online</button>
           </div>
         </div>
       </div>
@@ -1351,8 +1358,8 @@
           <div class="eyebrow">Contact & Booking</div>
           <h2 class="section-title">Make it easy for visitors to reach you</h2>
           <p class="section-text">
-            We work 24/7 through text messages. Online reservations can be made through the website for trips 8 hours or more in advance.
-            For reservations less than 8 hours away, please text or call our office.
+            We work 24/7 through text messages. Online reservations can be made through the website for trips
+            8 hours or more in advance. For reservations less than 8 hours away, please text or call our office.
           </p>
 
           <div class="card-grid" style="grid-template-columns: 1fr; margin-top: 20px;">
@@ -1365,7 +1372,7 @@
               <p><strong>Hours:</strong> 24/7 by text message. Trips under 8 hours: call or text the office.</p>
               <div class="btn-group" style="margin-top:18px;">
                 <a class="btn btn-primary" href="tel:+14073690643">Call Now</a>
-                <a class="btn btn-secondary" href="https://YOUR-VERCEL-APP.vercel.app" target="_blank" rel="noopener">Pay Online</a>
+                <button class="btn btn-secondary" type="button" id="payOnlineContactBtn">Pay Online</button>
               </div>
             </div>
           </div>
@@ -1457,12 +1464,14 @@
   <div class="float-actions" aria-label="Quick actions">
     <a class="float-btn call" href="tel:+14073690643" aria-label="Call now">✆</a>
     <a class="float-btn" href="#contact" aria-label="Open contact form">✉</a>
-    <a class="float-btn" href="https://YOUR-VERCEL-APP.vercel.app" target="_blank" rel="noopener" aria-label="Pay online">$</a>
+    <button class="float-btn" type="button" id="payOnlineFloatBtn" aria-label="Pay online">$</button>
   </div>
 
   <script>
     const QUOTE_FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqykyoy';
     const CONTACT_FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpqykyoy';
+    const PAYMENT_API_URL = 'https://YOUR-VERCEL-PROJECT.vercel.app/api/create-payment-link';
+    const DEFAULT_PAYMENT_AMOUNT = 50;
 
     const nav = document.getElementById('siteNav');
     const menuBtn = document.getElementById('menuBtn');
@@ -1480,19 +1489,29 @@
 
     const pickupAutocompleteEl = document.getElementById('pickupAutocomplete');
     const dropoffAutocompleteEl = document.getElementById('dropoffAutocomplete');
-
     const pickupHidden = document.getElementById('pickup');
     const dropoffHidden = document.getElementById('dropoff');
 
+    const payOnlineNavBtn = document.getElementById('payOnlineNavBtn');
+    const payOnlineCtaBtn = document.getElementById('payOnlineCtaBtn');
+    const payOnlineContactBtn = document.getElementById('payOnlineContactBtn');
+    const payOnlineFloatBtn = document.getElementById('payOnlineFloatBtn');
+
+    const payButtons = [
+      payOnlineNavBtn,
+      payOnlineCtaBtn,
+      payOnlineContactBtn,
+      payOnlineFloatBtn
+    ].filter(Boolean);
+
     let map = null;
-    let RouteClass = null;
-    let LatLngBoundsClass = null;
+    let directionsService = null;
+    let directionsRenderer = null;
     let mapReady = false;
-    let mapPolylines = [];
-    let mapMarkers = [];
 
     let selectedPickupAddress = '';
     let selectedDropoffAddress = '';
+    let lastEstimatedAmount = null;
 
     year.textContent = new Date().getFullYear();
 
@@ -1538,50 +1557,45 @@
     }
 
     function clearCurrentRoute() {
-      mapPolylines.forEach(polyline => polyline.setMap(null));
-      mapMarkers.forEach(marker => marker.setMap(null));
-      mapPolylines = [];
-      mapMarkers = [];
+      if (directionsRenderer) {
+        directionsRenderer.set('directions', null);
+      }
     }
 
     function normalize(text) {
       return (text || '').toLowerCase();
     }
 
-    function isAirport(text) {
+    function isAirportLocation(text) {
       const value = normalize(text);
       return (
         value.includes('airport') ||
         value.includes('mco') ||
         value.includes('orlando international') ||
-        value.includes('sanford international') ||
-        value.includes('sfb')
+        value.includes('sfb') ||
+        value.includes('sanford')
       );
     }
 
-    function isLocalArea(text) {
+    function isLocalOrlandoArea(text) {
       const value = normalize(text);
-      const localKeywords = [
+      return [
         'orlando',
-        'kissimmee',
-        'lake buena vista',
-        'celebration',
-        'bay lake',
-        'dr. phillips',
-        'dr phillips',
-        'winter garden',
-        'windermere',
-        'international drive',
-        'convention center',
         'disney',
         'universal',
-        'mco',
-        'airport'
-      ];
-      return localKeywords.some(keyword => value.includes(keyword));
+        'kissimmee',
+        'celebration',
+        'international drive',
+        'lake buena vista',
+        'bay lake',
+        'windermere',
+        'winter garden',
+        'dr phillips',
+        'convention center'
+      ].some(keyword => value.includes(keyword));
     }
 
-    function passengerSurcharge(passengers) {
+    function getPassengerSurcharge(passengers) {
       if (
         passengers === '4-6 passengers' ||
         passengers === '7-10 passengers' ||
@@ -1592,36 +1606,34 @@
       return 0;
     }
 
-    function regularOneWayEstimate(miles, pickup, dropoff) {
-      const localTrip = isLocalArea(pickup) && isLocalArea(dropoff);
+    function regularTripEstimate(miles, pickup, dropoff) {
+      const localTrip = isLocalOrlandoArea(pickup) && isLocalOrlandoArea(dropoff);
       const minimumCharge = localTrip ? 50 : 255;
       const baseFare = 20;
       const pricePerMile = 8;
       return Math.max(minimumCharge, baseFare + (miles * pricePerMile));
     }
 
-    function airportOneWayEstimate(miles) {
+    function airportTripEstimate(miles) {
       const minimumCharge = 133;
       const baseFare = 40;
       const pricePerMile = 8;
       return Math.max(minimumCharge, baseFare + (miles * pricePerMile));
     }
 
-    function cruiseEstimate(miles) {
-      const minimumCharge = 227;
-      const baseFare = 20;
-      const pricePerMile = 8;
-      return Math.max(minimumCharge, baseFare + (miles * pricePerMile));
+    function cruiseTripEstimate() {
+      return 227;
     }
 
     function getPriceEstimate(miles, serviceType, passengers, pickup, dropoff) {
-      const surcharge = passengerSurcharge(passengers);
+      const surcharge = getPassengerSurcharge(passengers);
 
       if (serviceType === 'Hourly Chauffeur') {
         return {
-          label: 'Estimated starting price',
+          label: 'Estimated hourly starting rate',
           value: '$255.00',
-          note: '$85 per hour, 3 hour minimum.'
+          numeric: 255,
+          note: '$85 per hour with a 3 hour minimum.'
         };
       }
 
@@ -1629,64 +1641,74 @@
         return {
           label: 'Estimated starting charter',
           value: '$255.00',
-          note: 'Includes the first 3 hours, then $85 per each additional hour.'
+          numeric: 255,
+          note: 'Wedding/event service starts at $255 for the first 3 hours, then $85 per additional hour.'
         };
       }
 
       if (serviceType === 'Cruise Transfer') {
-        const estimate = cruiseEstimate(miles) + surcharge;
+        const estimate = cruiseTripEstimate() + surcharge;
         return {
           label: 'Estimated starting price',
           value: '$' + estimate.toFixed(2),
-          note: 'Cruise transfers start at $227 from anywhere in Orlando.'
+          numeric: estimate,
+          note: 'Cruise transfers from Orlando start at $227.'
         };
       }
 
       if (serviceType === 'Airport Transfer') {
-        const estimate = airportOneWayEstimate(miles) + surcharge;
+        const estimate = airportTripEstimate(miles) + surcharge;
         return {
           label: 'Estimated starting price',
           value: '$' + estimate.toFixed(2),
+          numeric: estimate,
           note: 'Airport transfer minimum is $133.'
         };
       }
 
       if (serviceType === 'Round Trip') {
-        const oneWay = (isAirport(pickup) || isAirport(dropoff))
-          ? airportOneWayEstimate(miles)
-          : regularOneWayEstimate(miles, pickup, dropoff);
+        const oneWay = (isAirportLocation(pickup) || isAirportLocation(dropoff))
+          ? airportTripEstimate(miles)
+          : regularTripEstimate(miles, pickup, dropoff);
 
         const estimate = Math.max(0, (oneWay * 2) - 20) + surcharge;
         return {
           label: 'Estimated round-trip starting price',
           value: '$' + estimate.toFixed(2),
-          note: 'Round-trip estimate uses approximately 2x one-way pricing with a $20 discount.'
+          numeric: estimate,
+          note: 'Round trip is approximately one-way x2 minus $20.'
         };
       }
 
-      const estimate = regularOneWayEstimate(miles, pickup, dropoff) + surcharge;
+      const estimate = regularTripEstimate(miles, pickup, dropoff) + surcharge;
       return {
         label: 'Estimated starting price',
         value: '$' + estimate.toFixed(2),
-        note: 'Local Disney/Universal minimum is $50. Out-of-town trips start at $255.'
+        numeric: estimate,
+        note: 'Disney/Universal local minimum is $50. Out-of-town minimum starts at $255.'
       };
     }
 
-    async function fitMapToPath(path) {
-      const bounds = new LatLngBoundsClass();
-      path.forEach(point => bounds.extend(point));
-      map.fitBounds(bounds, 60);
+    function routeRequest(request) {
+      return new Promise((resolve, reject) => {
+        directionsService.route(request, (result, status) => {
+          if (status === 'OK' && result) {
+            resolve(result);
+          } else {
+            reject(new Error('Unable to calculate this route right now. Please check the addresses and try again.'));
+          }
+        });
+      });
     }
 
     async function attachAutocompleteBehavior(element, hiddenInput, type) {
       element.includedRegionCodes = ['us'];
-      element.placeholder = type === 'pickup' ? 'Airport, hotel, address' : 'Destination';
 
       element.addEventListener('gmp-select', async ({ placePrediction }) => {
         const place = placePrediction.toPlace();
         await place.fetchFields({ fields: ['formattedAddress', 'location'] });
 
-        const formatted = place.formattedAddress || element.value || '';
+        const formatted = place.formattedAddress || '';
 
         if (type === 'pickup') {
           selectedPickupAddress = formatted;
@@ -1696,33 +1718,24 @@
 
         hiddenInput.value = formatted;
       });
-
-      element.addEventListener('gmp-error', () => {
-        setQuoteMessage(
-          'error',
-          '<strong>Places suggestions could not load.</strong>Please check your key restrictions, Places API, and billing.'
-        );
-      });
     }
 
     window.initGoogleMap = async function () {
       try {
-        const [{ Map }, { Route }, { PlaceAutocompleteElement }, { LatLngBounds }] = await Promise.all([
-          google.maps.importLibrary('maps'),
-          google.maps.importLibrary('routes'),
-          google.maps.importLibrary('places'),
-          google.maps.importLibrary('core')
-        ]);
+        await google.maps.importLibrary('places');
 
-        RouteClass = Route;
-        LatLngBoundsClass = LatLngBounds;
-
-        map = new Map(document.getElementById('routeMap'), {
+        map = new google.maps.Map(document.getElementById('routeMap'), {
           center: { lat: 28.5383, lng: -81.3792 },
           zoom: 10,
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: true
+        });
+
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: false
         });
 
         await attachAutocompleteBehavior(pickupAutocompleteEl, pickupHidden, 'pickup');
@@ -1732,71 +1745,51 @@
       } catch (error) {
         setQuoteMessage(
           'error',
-          '<strong>Google Maps did not load.</strong> Check billing, enabled APIs, and website key restrictions.'
+          '<strong>Google Maps did not load.</strong> Please check your API key, billing, Places API (New), and website restrictions.'
         );
       }
     };
 
     async function calculateRouteEstimate() {
-      const pickup = (pickupHidden.value || pickupAutocompleteEl.value || selectedPickupAddress || '').trim();
-      const dropoff = (dropoffHidden.value || dropoffAutocompleteEl.value || selectedDropoffAddress || '').trim();
+      const pickup = (pickupHidden.value || selectedPickupAddress || '').trim();
+      const dropoff = (dropoffHidden.value || selectedDropoffAddress || '').trim();
       const passengers = document.getElementById('passengers').value;
       const serviceType = document.getElementById('service').value;
 
-      pickupHidden.value = pickup;
-      dropoffHidden.value = dropoff;
-
       if (!pickup || !dropoff) {
-        throw new Error('Please enter both pickup and drop-off locations and select the suggestions.');
+        throw new Error('Please select both pickup and drop-off suggestions first.');
       }
 
-      if (!mapReady || !RouteClass) {
+      if (!mapReady || !directionsService || !directionsRenderer) {
         throw new Error('Google Maps is still loading. Please refresh and try again.');
       }
 
-      const request = {
+      const result = await routeRequest({
         origin: pickup,
         destination: dropoff,
-        travelMode: 'DRIVING',
-        routingPreference: 'TRAFFIC_AWARE',
-        fields: ['path', 'distanceMeters', 'durationMillis']
-      };
-
-      const { routes } = await RouteClass.computeRoutes(request);
-
-      if (!routes || !routes.length) {
-        throw new Error('No route was found. Please check the locations and try again.');
-      }
-
-      const route = routes[0];
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      });
 
       clearCurrentRoute();
+      directionsRenderer.setDirections(result);
 
-      mapPolylines = route.createPolylines();
-      mapPolylines.forEach(polyline => polyline.setMap(map));
-
-      if (typeof route.createWaypointAdvancedMarkers === 'function') {
-        const markers = await route.createWaypointAdvancedMarkers();
-        mapMarkers = markers || [];
-        mapMarkers.forEach(marker => marker.setMap(map));
-      }
-
-      if (route.path && route.path.length) {
-        await fitMapToPath(route.path);
-      }
-
-      const miles = (route.distanceMeters || 0) / 1609.344;
-      const durationMinutes = Math.round((route.durationMillis || 0) / 60000);
+      const leg = result.routes[0].legs[0];
+      const miles = (leg.distance.value || 0) / 1609.344;
+      const localizedDistance = leg.distance.text || miles.toFixed(1) + ' mi';
+      const localizedDuration = leg.duration.text || 'N/A';
       const price = getPriceEstimate(miles, serviceType, passengers, pickup, dropoff);
+
+      lastEstimatedAmount = price.numeric;
 
       setQuoteMessage(
         'success',
         `<strong>Estimated Trip Details</strong>
          Pickup: ${pickup}<br>
          Drop-off: ${dropoff}<br>
-         Distance: ${miles.toFixed(1)} mi<br>
-         Drive time: about ${durationMinutes} mins<br>
-         ${price.label}: ${price.value}<br>
+         Distance: ${localizedDistance}<br>
+         Drive time: about ${localizedDuration}<br>
+         ${price.label}: ${price.value}<br><br>
          <small>${price.note}</small><br><br>
          <small>Final pricing may change based on tolls, wait time, luggage, exact vehicle used, and special requests.</small>`
       );
@@ -1807,7 +1800,7 @@
         passengers,
         serviceType,
         miles: miles.toFixed(1),
-        duration: `${durationMinutes} mins`,
+        duration: localizedDuration,
         priceValue: price.value
       };
     }
@@ -1864,12 +1857,75 @@
         contactSubmitBtn.textContent = 'Send Request';
       }
     }
+
+    function setPayButtonsLoading(isLoading) {
+      payButtons.forEach(btn => {
+        btn.disabled = isLoading;
+        btn.dataset.originalText = btn.dataset.originalText || btn.textContent;
+        btn.textContent = isLoading ? 'Loading...' : btn.dataset.originalText;
+      });
+    }
+
+    function isPlaceholderPaymentUrl(url) {
+      return url.includes('YOUR-VERCEL-PROJECT');
+    }
+
+    async function handlePayOnline() {
+      if (isPlaceholderPaymentUrl(PAYMENT_API_URL)) {
+        alert('Replace PAYMENT_API_URL with your real Vercel function URL.');
+        return;
+      }
+
+      const amount = lastEstimatedAmount || DEFAULT_PAYMENT_AMOUNT;
+      const note = lastEstimatedAmount
+        ? `Transportation payment estimate - $${amount.toFixed(2)}`
+        : `Reservation deposit - $${DEFAULT_PAYMENT_AMOUNT.toFixed(2)}`;
+
+      try {
+        setPayButtonsLoading(true);
+
+        const response = await fetch(PAYMENT_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            amount,
+            note
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || !data.url) {
+          throw new Error(data.error || 'Unable to create payment link.');
+        }
+
+        window.location.href = data.url;
+      } catch (error) {
+        alert(error.message || 'Unable to start checkout right now.');
+      } finally {
+        setPayButtonsLoading(false);
+      }
+    }
+
+    payButtons.forEach(btn => {
+      btn.addEventListener('click', handlePayOnline);
+    });
   </script>
 
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsCRq7iiL-Rdq4IX61C7kEi_YP1Xxh3mc&loading=async&libraries=places&callback=initGoogleMap"
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&loading=async&libraries=places&callback=initGoogleMap"
     async
     defer
   ></script>
 </body>
 </html>
+```
+
+This file assumes your **Vercel payment function already exists** and returns a JSON object with a `url` field from Square’s payment-link creation flow. Square’s Checkout API creates Square-hosted payment links, and your frontend redirects to that returned URL. ([Square][2])
+
+If you want, next I’ll give you the matching **Vercel `api/create-payment-link.js`** file one more time in a clean final version.
+
+[1]: https://developers.google.com/maps/documentation/javascript/place-autocomplete-new "Place Autocomplete Widget  |  Maps JavaScript API  |  Google for Developers"
+[2]: https://developer.squareup.com/docs/checkout-api?utm_source=chatgpt.com "Checkout API"
